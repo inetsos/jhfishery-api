@@ -13,7 +13,7 @@ var userSchema = mongoose.Schema({
     password:{
         type:String,
         required:[true,'비밀번호를 입력하세요.'],
-        match: [/^.{8,16}$/,'최소 8자 이상 숫자와 영문자의 조합입니다.'],
+        match: [/^.{8,16}$/,'8~16 사이의 숫자와 영문자의 조합입니다.'],
         select:false
     },
     name:{
@@ -23,7 +23,7 @@ var userSchema = mongoose.Schema({
     storeName:{
         type:String,
         required:[true,'상호를 입력하세요.'],
-        match:[/^.{4,20}$/,'4~20글자입니다.'],
+        match:[/^.{2,40}$/,'2~40글자입니다.'],
         trim:true
     },
     phone:{
@@ -60,7 +60,7 @@ userSchema.virtual('newPassword')
 
 // password validation
 var passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/;
-var passwordRegexErrorMessage = '최소 8자 이상 숫자와 영문자의 조합입니다.';
+var passwordRegexErrorMessage = '8~16자 사이의 숫자와 영문자의 조합입니다.';
 userSchema.path('password').validate(function(v) {
     var user = this;
 
