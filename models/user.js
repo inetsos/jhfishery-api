@@ -5,8 +5,8 @@ var bcrypt = require('bcrypt-nodejs');
 var userSchema = mongoose.Schema({
     userID: {
         type: String,
-        required: [true, '회원 아이디를 입력하세요.'],
-        match: [/^.{8,16}$/,'8~16 글자입니다 .'],
+        required: [true, '아이디를 입력하세요.'],
+        match: [/^.{8,16}$/,'8~16사이의 영문 숫자입니다 .'],
         trim:true,
         unique:true
     },

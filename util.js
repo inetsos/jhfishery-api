@@ -29,8 +29,8 @@ util.parseError = function(errors) {
             var validationError = errors.errors[name];
             parsed[name] = { message:validationError.message };
         }
-    } else if(errors.code == '11000' && errors.errmsg.indexOf('username') > 0) {
-        parsed.username = { message:'This username already exists!' };
+    } else if(errors.code == '11000' && errors.errmsg.indexOf('userID') > 0) {
+        parsed.userID = { message:'이미 등록된 아이디 입니다.' };
     } else {
         parsed.unhandled = errors;
     }

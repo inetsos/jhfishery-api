@@ -13,9 +13,9 @@ router.post('/login',
             errors:{}
         };
 
-        if(!req.body.username){
+        if(!req.body.userID){
             isValid = false;
-            validationError.errors.username = {message:'사용자 아이디를 입력하세요.'};
+            validationError.errors.userID = {message:'아이디를 입력하세요.'};
         }
         if(!req.body.password){
             isValid = false;
@@ -28,7 +28,7 @@ router.post('/login',
             next();
     },
     function(req,res,next){
-        User.findOne({username:req.body.username}).select({password:1,username:1,name:1,email:1}).exec(function(err,user){
+        User.findOne({userID:req.body.userID}).select({password:1,userID:1,name:1,email:1}).exec(function(err,user){
             if(err) 
                 return res.json(util.successFalse(err));
             else if(!user||!user.authenticate(req.body.password))
@@ -36,7 +36,7 @@ router.post('/login',
             else {
                 var payload = {
                     _id : user._id,
-                    username: user.username
+                    userID: user.userID
                 };
                 var secretOrPrivateKey = process.env.JWT_SECRET;
                 var options = {expiresIn: 60*60*24};
@@ -70,7 +70,7 @@ router.get('/refresh', util.isLoggedin,
             else {
                 var payload = {
                     _id : user._id,
-                    username: user.username
+                    userID: user.userID
                 };
                 var secretOrPrivateKey = process.env.JWT_SECRET;
                 var options = {expiresIn: 60*60*24};
