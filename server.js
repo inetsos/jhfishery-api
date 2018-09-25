@@ -32,6 +32,7 @@ app.use('/api/users', require('./api/users'));
 app.use('/api/auth', require('./api/auth'));
 app.use('/api/upload', require('./api/upload'));  
 app.use('/api/invoices', require('./api/invoices'));
+app.use('/api/sellers', require('./api/sellers'));
 
 // Server
 var port = 3300;
