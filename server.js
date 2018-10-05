@@ -1,4 +1,6 @@
 var express    = require('express');
+var vhost = require('vhost');
+
 var app        = express();
 
 var mongoose   = require('mongoose');
@@ -35,8 +37,20 @@ app.use('/api/invoices', require('./api/invoices'));
 app.use('/api/sellers', require('./api/sellers'));
 app.use('/api/unstorings', require('./api/unstorings'));
 
+app.use('/', (req, res) => {
+    res.statusCode = 200; // 통신 성공
+    res.setHeader('Content-Type', 'text/plain;charset=UTF-8');
+    res.end('2019. 새로운 시작 \n\nWON soft?\n');
+});
+
+var hostname = 'jhfishery-api.ebizpia.co.kr'; // 서버 컴퓨터의 ip
+var port = 3300; //
+
+var server = express();
+server.use(vhost(hostname, app));
+
 // Server
-var port = 3300;
-app.listen(port, function(){
-    console.log('listening on port:' + port);
+//var port = 3300;
+server.listen(port, function(){
+    console.log(`Server running at http://${hostname}:${port}/`);
 });
