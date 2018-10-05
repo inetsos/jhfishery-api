@@ -35,7 +35,10 @@ var invoiceSchema = mongoose.Schema({
     out_date: { type: String, trim:true, },
     out_number: { type: Number },
     out_sum: { type: Number },
-    out_purchase: { type: String, trim:true, }
+    out_purchase: { type: String, trim:true, },
+    unstoring: [
+        { type:mongoose.Schema.Types.ObjectId, ref:"unstoring" }
+    ]
 });
 
 // model & export

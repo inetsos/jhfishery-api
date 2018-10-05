@@ -27,6 +27,52 @@ router.get('/:today', function(req,res,next) {
     });
 });
 
+router.get('/getlist/:seller', function(req,res,next) {
+    const seller = req.params.seller;
+    Invoice.find({seller: seller}).sort({invoice:1}).exec(function(err,invoices) {
+        res.json( err || !invoices ? util.successFalse(err) : util.successTrue(invoices));
+    });
+});
+
+router.get('/getitem/:id', function(req,res,next) {
+    Invoice.findOne({_id: req.params.id}).populate('unstoring').exec(function(err,invoice) {
+        //console.log(err);
+        if(err) {
+            // 출고데이터가 없는 경우
+            Invoice.findOne({_id: req.params.id}).exec(function(err,invoice) {
+                //console.log(invoice);
+                if(err) {
+                    res.json(util.successFalse(err));
+                } else {
+                    res.json(util.successTrue(invoice));
+                }
+            });
+        } else {
+            res.json(util.successTrue(invoice));
+        }
+        //res.json( err || !invoice ? util.successFalse(err) : util.successTrue(invoice));
+    });
+})
+
+// update
+router.put('/:id', util.isLoggedin, function(req,res,next){
+    Invoice.findOne({_id: req.params.id}).exec(function(err, invoice){
+        if( err || !invoice ) 
+            return res.json(util.successFalse(err));
+
+        for(var p in req.body) {
+            invoice[p] = req.body[p];
+        }
+        
+        // save updated user
+        invoice.save(function(err,invoice) {
+            if( err || !invoice ) return res.json(util.successFalse(err));
+            else {
+                res.json(util.successTrue(invoice));
+            }
+        });
+    });
+});
 
 /////////////////////////////////////////////////
 
@@ -45,29 +91,7 @@ router.get('/:today', function(req,res,next) {
 //     });
 // });
 
-// // update
-// router.put('/:userID', util.isLoggedin, checkPermission, function(req,res,next){
-//     User.findOne({userID:req.params.userID}).select({password:1}).exec(function(err,user){
-//         if( err || !user ) 
-//             return res.json(util.successFalse(err));
 
-//         // update user object
-//         user.originalPassword = user.password;
-//         user.password = req.body.newPassword ? req.body.newPassword : user.password;
-//         for(var p in req.body) {
-//             user[p] = req.body[p];
-//         }
-
-//         // save updated user
-//         user.save(function(err,user) {
-//             if( err || !user ) return res.json(util.successFalse(err));
-//             else {
-//                 user.password = undefined;
-//                 res.json(util.successTrue(user));
-//             }
-//         });
-//     });
-// });
 
 // // destroy
 // router.delete('/:userID', util.isLoggedin, checkPermission, function(req,res,next){
