@@ -27,9 +27,11 @@ router.get('/:today', function(req,res,next) {
     });
 });
 
-router.get('/getlist/:seller', function(req,res,next) {
-    const seller = req.params.seller;
-    Invoice.find({seller: seller}).sort({invoice:1}).exec(function(err,invoices) {
+router.get('/getlist/:seller_no', function(req,res,next) {
+    const seller_no = req.params.seller_no;
+    //console.log(req.params.seller_no);
+    Invoice.find({seller_no: seller_no}).sort({invoice:1}).exec(function(err,invoices) {
+        //console.log(invoices);
         res.json( err || !invoices ? util.successFalse(err) : util.successTrue(invoices));
     });
 });

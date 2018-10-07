@@ -32,6 +32,7 @@ var invoiceSchema = mongoose.Schema({
     weight: { type: Number },
     in_number: { type: Number },
     in_sum: { type: Number },
+    seller_no: { type: Number },
     out_date: { type: String, trim:true, },
     out_number: { type: Number },
     out_sum: { type: Number },

@@ -74,6 +74,7 @@ router.post('/',  function(req, res) {
                     invoice.weight = result[i].weight;
                     invoice.in_number = parseInt(result[i].in_number);
                     invoice.in_sum = parseInt(result[i].in_sum);
+                    invoice.seller_no = parseInt(result[i].seller_no);
                     invoice.out_date = '';
                     invoice.out_number = 0;
                     invoice.out_sum = 0;
@@ -84,8 +85,8 @@ router.post('/',  function(req, res) {
                             //res.json({error_code:0,err_desc:null, data: result});
                         })
                         .catch((err) => {
-                            //console.log(err);
-                            return res.json({error_code:1,err_desc:err});
+                            console.log(err);
+                            //return res.json({error_code:1,err_desc:err});
                         });
                 }
                 res.json({error_code:0,err_desc:null, data: result});
