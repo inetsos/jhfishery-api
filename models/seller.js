@@ -16,6 +16,11 @@ var sellerSchema = mongoose.Schema({
         match: [/^.{8,16}$/,'8~16 사이의 숫자와 영문자의 조합입니다.'],
         select:false
     },
+    sellerNo: {
+        type: Number,
+        required:[true,'영업인 번호를 입력하세요.'],
+        match: [/^[0-9]*$/,'숫자만 입력하세요.'],
+    },
     name:{
         type:String,
         trim:true

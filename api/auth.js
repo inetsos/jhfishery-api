@@ -108,8 +108,10 @@ router.post('/seller/login',
         else 
             next();
     },
-    function(req, res, next){
+    function(req, res, next) {
+        
         Seller.findOne({userID:req.body.userID}).select({password:1,userID:1,name:1,email:1}).exec(function(err, seller){
+        
             if(err) 
                 return res.json(util.successFalse(err));
             else if(!seller || !seller.authenticate(req.body.password))
