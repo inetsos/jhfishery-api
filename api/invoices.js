@@ -22,7 +22,7 @@ router.get('/:today', function(req,res,next) {
     var start = moment(today).format('YYYY-MM-DD');
     var tomorrow = moment(moment(today).add(1, 'days')).format('YYYY-MM-DD');
 
-    Invoice.find({in_date:{$gte: start, $lt: tomorrow}}).sort({invoice:1}).exec(function(err,invoices) {
+    Invoice.find({in_date:{$gte: start, $lt: tomorrow}}).populate('unstoring').sort({invoice:1}).exec(function(err,invoices) {
         res.json( err || !invoices ? util.successFalse(err) : util.successTrue(invoices));
     });
 });
