@@ -85,7 +85,7 @@ router.post('/',  function(req, res) {
                             //res.json({error_code:0,err_desc:null, data: result});
                         })
                         .catch((err) => {
-                            console.log(err);
+                            //console.log(err);
                             //return res.json({error_code:1,err_desc:err});
                         });
                 }
@@ -94,7 +94,7 @@ router.post('/',  function(req, res) {
         } catch (e){
             res.json({error_code:1,err_desc:"엑셀 파일이 아닙니다."});
         }
-    })
+    });
 });   
 
 module.exports = router;

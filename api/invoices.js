@@ -22,7 +22,12 @@ router.get('/:today', function(req,res,next) {
     var start = moment(today).format('YYYY-MM-DD');
     var tomorrow = moment(moment(today).add(1, 'days')).format('YYYY-MM-DD');
 
-    Invoice.find({in_date:{$gte: start, $lt: tomorrow}}).populate('unstoring').sort({invoice:1}).exec(function(err,invoices) {
+    // Invoice.find({in_date:{$gte: start, $lt: tomorrow}}).populate('unstoring').sort({invoice:1}).exec(function(err,invoices) {
+    //     res.json( err || !invoices ? util.successFalse(err) : util.successTrue(invoices));
+    // });
+
+    // 입력한 날 이후 모든 데이터를 보여주도록 한다.  20181009
+    Invoice.find({in_date:{$gte: start}}).populate('unstoring').sort({invoice:1}).exec(function(err,invoices) {
         res.json( err || !invoices ? util.successFalse(err) : util.successTrue(invoices));
     });
 });
@@ -54,7 +59,7 @@ router.get('/getitem/:id', function(req,res,next) {
         }
         //res.json( err || !invoice ? util.successFalse(err) : util.successTrue(invoice));
     });
-})
+});
 
 // update
 router.put('/:id', util.isLoggedin, function(req,res,next){
