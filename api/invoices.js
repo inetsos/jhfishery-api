@@ -1,6 +1,7 @@
 var express  = require('express');
 var router   = express.Router();
 var Invoice  = require('../models/Invoice');
+var Unstoring  = require('../models/Unstoring');
 var util     = require('../util');
 var moment = require('moment');
 
@@ -110,6 +111,21 @@ router.put('/:id', util.isLoggedin, function(req,res,next){
                 res.json(util.successTrue(invoice));
             }
         });
+    });
+});
+
+// destroy
+router.delete('/:id', util.isLoggedin, function(req,res,next){
+    Invoice.findOneAndRemove({_id:req.params.id}).exec(function(err,invoice) {
+        if( err || !invoice)
+            res.json(util.successFalse(err));
+        else {
+            // Unstoring 삭제
+            console.log(invoice.unstoring);
+            Unstoring.deleteMany({ _id : {$in : [invoice.unstoring] }} ).exec(function(err, unstoring) {
+                res.json(util.successTrue(invoice));                
+            });           
+        }        
     });
 });
 
