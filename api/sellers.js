@@ -5,7 +5,7 @@ var util     = require('../util');
 
 // index
 router.get('/', util.isLoggedin, function(req,res,next){
-    Seller.find({}).sort({userID:1}).exec(function(err,sellers){
+    Seller.find({}).sort({sellerNo:1}).exec(function(err,sellers){
         res.json( err || !sellers ? util.successFalse(err) : util.successTrue(sellers));
     });
 });

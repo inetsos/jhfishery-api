@@ -16,6 +16,7 @@
 // 매수처	out_purchase	string    
 
 var mongoose = require('mongoose');
+// require('mongoose-double')(mongoose);
 
 // schema
 var invoiceSchema = mongoose.Schema({
@@ -27,7 +28,7 @@ var invoiceSchema = mongoose.Schema({
     invoice: { type: String, trim:true, },
     origin: { type: String, trim:true, },
     item: { type: String, trim:true, },
-    unit: { type: Number },
+    unit: { type: String, trim: true },
     quality: { type: String, trim:true, },
     weight: { type: Number },
     in_number: { type: Number },

@@ -13,7 +13,7 @@ router.post('/', function(req,res,next) {
 
 // destroy
 router.delete('/:id', util.isLoggedin, function(req,res,next){
-    Unstoring.findOneAndRemove({id:req.params.id}).exec(function(err,unstoring) { 
+    Unstoring.findOneAndRemove({_id:req.params.id}).exec(function(err,unstoring) { 
         res.json(err || !unstoring? util.successFalse(err) : util.successTrue(unstoring));
     });
 });
