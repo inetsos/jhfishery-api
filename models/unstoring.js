@@ -12,10 +12,13 @@ var unstoringSchema = mongoose.Schema({
         required:[true,'판매수량을 입력하세요.'],
         match: [/^[0-9]*$/,'숫자만 입력하세요.'],
     },
-    outSum:{
+    outPrice:{
         type:Number,
         required:[true,'판매수량을 입력하세요.'],
         match: [/^[0-9]*$/,'숫자만 입력하세요.'],
+    },
+    outSum:{
+        type:Number
     },
     outPurchase:{
         type:String,
