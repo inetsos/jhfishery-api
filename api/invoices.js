@@ -80,6 +80,75 @@ router.get('/:today/sale', function(req,res,next) {
     });
 });
 
+router.get('/:s_day/:e_day', function(req,res,next) {
+
+    var str = req.params.s_day.split('-');
+    var year = Number(str[0]);
+    var month = Number(str[1]) - 1;
+    var date = Number(str[2]);
+    const s_day =  new Date(year, month, date);
+    const start_day = moment(s_day).format('YYYY-MM-DD');
+    
+    str = req.params.e_day.split('-');
+    year = Number(str[0]);
+    month = Number(str[1]) - 1;
+    date = Number(str[2]);
+    const e_day =  new Date(year, month, date);
+    const end_day = moment(e_day).format('YYYY-MM-DD');
+
+    Invoice.find( { $and: [ {in_date:{$gte: start_day, $lte: end_day}}, { $where: function() { return (this.in_number !== this.out_number);}} ]})
+        .populate('unstoring').sort({invoice:1}).exec(function(err,invoices) {
+            //console.log(invoices);
+            res.json( err || !invoices ? util.successFalse(err) : util.successTrue(invoices));
+    });
+});
+
+router.get('/:s_day/:e_day/all', function(req,res,next) {
+    
+    var str = req.params.s_day.split('-');
+    var year = Number(str[0]);
+    var month = Number(str[1]) - 1;
+    var date = Number(str[2]);
+    const s_day =  new Date(year, month, date);
+    const start_day = moment(s_day).format('YYYY-MM-DD');
+    
+    str = req.params.e_day.split('-');
+    year = Number(str[0]);
+    month = Number(str[1]) - 1;
+    date = Number(str[2]);
+    const e_day =  new Date(year, month, date);
+    const end_day = moment(e_day).format('YYYY-MM-DD');
+
+    Invoice.find({in_date:{$gte: start_day, $lte: end_day}}).populate('unstoring').sort({invoice:1}).exec(function(err,invoices) {
+        res.json( err || !invoices ? util.successFalse(err) : util.successTrue(invoices));
+    });
+});
+
+router.get('/:s_day/:e_day/sale', function(req,res,next) {
+    
+    var str = req.params.s_day.split('-');
+    var year = Number(str[0]);
+    var month = Number(str[1]) - 1;
+    var date = Number(str[2]);
+    const s_day =  new Date(year, month, date);
+    const start_day = moment(s_day).format('YYYY-MM-DD');
+    
+    str = req.params.e_day.split('-');
+    year = Number(str[0]);
+    month = Number(str[1]) - 1;
+    date = Number(str[2]);
+    const e_day =  new Date(year, month, date);
+    const end_day = moment(e_day).format('YYYY-MM-DD');
+
+    Invoice.find().populate({
+        path:'unstoring',
+        match: { 
+            outDate: {$gte: start_day, $lte: end_day}
+        }}).sort({invoice:1}).exec(function(err,invoices) {
+        res.json( err || !invoices ? util.successFalse(err) : util.successTrue(invoices));
+    });
+});
+
 router.get('/getlist/:seller_no', function(req,res,next) {
     const seller_no = req.params.seller_no;
     //console.log(req.params.seller_no);
