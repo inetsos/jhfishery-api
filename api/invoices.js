@@ -65,6 +65,7 @@ router.get('/:today/sale', function(req,res,next) {
     var today =  new Date(year, month, date);
 
     var start = moment(today).format('YYYY-MM-DD');
+    // console.log(start);
     var tomorrow = moment(moment(today).add(1, 'days')).format('YYYY-MM-DD');
 
     // Invoice.find({in_date:{$gte: start, $lt: tomorrow}}).populate('unstoring').sort({invoice:1}).exec(function(err,invoices) {
@@ -78,9 +79,10 @@ router.get('/:today/sale', function(req,res,next) {
         }}).sort({invoice:1}).exec(function(err,invoices) {
         res.json( err || !invoices ? util.successFalse(err) : util.successTrue(invoices));
     });
+
 });
 
-router.get('/:s_day/:e_day', function(req,res,next) {
+router.get('/:s_day/:e_day/period', function(req,res,next) {
 
     var str = req.params.s_day.split('-');
     var year = Number(str[0]);
@@ -103,7 +105,7 @@ router.get('/:s_day/:e_day', function(req,res,next) {
     });
 });
 
-router.get('/:s_day/:e_day/all', function(req,res,next) {
+router.get('/periodAll/:s_day/:e_day', function(req,res,next) {
     
     var str = req.params.s_day.split('-');
     var year = Number(str[0]);
@@ -124,7 +126,7 @@ router.get('/:s_day/:e_day/all', function(req,res,next) {
     });
 });
 
-router.get('/:s_day/:e_day/sale', function(req,res,next) {
+router.get('/periodSale/:s_day/:e_day', function(req,res,next) {
     
     var str = req.params.s_day.split('-');
     var year = Number(str[0]);
@@ -151,9 +153,9 @@ router.get('/:s_day/:e_day/sale', function(req,res,next) {
 
 router.get('/getlist/:seller_no', function(req,res,next) {
     const seller_no = req.params.seller_no;
-    //console.log(req.params.seller_no);
+    
     Invoice.find({$and: [ {seller_no: seller_no}, { $where: function() { return (this.in_number !== this.out_number);}}]})
-        .sort({invoice:1}).exec(function(err,invoices) {
+        .sort({invoice:1}).populate('unstoring').exec(function(err,invoices) {
             res.json( err || !invoices ? util.successFalse(err) : util.successTrue(invoices));
     });
 });
@@ -161,8 +163,7 @@ router.get('/getlist/:seller_no', function(req,res,next) {
 router.get('/getlist/:seller_no/all', function(req,res,next) {
     const seller_no = req.params.seller_no;
     //console.log(req.params.seller_no);
-    Invoice.find({seller_no: seller_no}).sort({invoice:1}).exec(function(err,invoices) {
-        //console.log(invoices);
+    Invoice.find({seller_no: seller_no}).sort({invoice:1}).populate('unstoring').exec(function(err,invoices) {
         res.json( err || !invoices ? util.successFalse(err) : util.successTrue(invoices));
     });
 });
