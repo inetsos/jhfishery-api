@@ -190,6 +190,7 @@ router.get('/getitem/:id', function(req,res,next) {
 
 // update
 router.put('/:id', util.isLoggedin, function(req,res,next){
+    
     Invoice.findOne({_id: req.params.id}).exec(function(err, invoice){
         if( err || !invoice ) 
             return res.json(util.successFalse(err));

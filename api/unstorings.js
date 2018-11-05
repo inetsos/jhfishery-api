@@ -11,6 +11,26 @@ router.post('/', function(req,res,next) {
     });
 });
 
+// update
+router.put('/:id', util.isLoggedin, function(req,res,next){
+    Unstoring.findOne({_id:req.params.id}).exec(function(err,unstoring){
+        if( err || !unstoring ) 
+            return res.json(util.successFalse(err));
+
+        for(var p in req.body) {
+            unstoring[p] = req.body[p];
+        }
+
+        // save updated user
+        unstoring.save(function(err, unstoring) {
+            if( err || !unstoring ) return res.json(util.successFalse(err));
+            else {
+                res.json(util.successTrue(unstoring));
+            }
+        });
+    });
+});
+
 // destroy
 router.delete('/:id', util.isLoggedin, function(req,res,next){
     Unstoring.findOneAndRemove({_id:req.params.id}).exec(function(err,unstoring) { 
