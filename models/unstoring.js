@@ -25,7 +25,8 @@ var unstoringSchema = mongoose.Schema({
         required:[true,'판매처를 입력하세요.'],
         match:[/^.{2,40}$/,'2~40글자입니다.'],
         trim:true
-    }
+    },
+    createAt:{type:Date, default:Date.now}
 });
 
 // model & export
