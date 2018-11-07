@@ -26,7 +26,7 @@ var unstoringSchema = mongoose.Schema({
         match:[/^.{2,40}$/,'2~40글자입니다.'],
         trim:true
     },
-    createAt:{type:Date, default:Date.now}
+    createdAt:{type:Date, default:Date.now}
 });
 
 // model & export

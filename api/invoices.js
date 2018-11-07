@@ -151,6 +151,27 @@ router.get('/periodSale/:s_day/:e_day', function(req,res,next) {
     });
 });
 
+router.get('/periodDeadline/:s_day', function(req,res,next) {
+    
+    var str = req.params.s_day.split('-');
+    var year = Number(str[0]);
+    var month = Number(str[1]) - 1;
+    var date = Number(str[2]);
+    const s_day =  new Date(year, month, date);
+    const e_day =  new Date(year, month, date+1);
+    //const start_day = moment(s_day).format('YYYY-MM-DD');
+    
+    //const end_day = moment(moment(s_day).add(1, 'days')).format('YYYY-MM-DD');
+
+    Invoice.find().populate({
+        path:'unstoring',
+        match: { 
+            createdAt: {$gte: s_day, $lt: e_day}
+        }}).sort({invoice:1}).exec(function(err,invoices) {
+        res.json( err || !invoices ? util.successFalse(err) : util.successTrue(invoices));
+    });
+});
+
 router.get('/getlist/:seller_no', function(req,res,next) {
     const seller_no = req.params.seller_no;
     
