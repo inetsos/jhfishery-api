@@ -12,6 +12,13 @@ router.get('/', util.isLoggedin, function(req,res,next){
     });
 });
 
+// show
+router.get('/:invoice', util.isLoggedin, function(req,res,next){
+    Invoice.find({invoice: req.params.invoice}).populate('unstoring').exec(function(err, invoices) {
+        res.json( err || !invoices ? util.successFalse(err) : util.successTrue(invoices));
+    });
+});
+
 router.get('/:today', function(req,res,next) {
     const str = req.params.today.split('-');
     const year = Number(str[0]);
@@ -255,12 +262,7 @@ router.delete('/:id', util.isLoggedin, function(req,res,next){
 //     });
 // });
 
-// // show
-// router.get('/:userID', util.isLoggedin, function(req,res,next){
-//     User.findOne({userID: req.params.userID}).exec(function(err,user) {
-//         res.json( err || !user ? util.successFalse(err) : util.successTrue(user));
-//     });
-// });
+
 
 
 
